@@ -1,0 +1,227 @@
+/* =========================================
+   1. Global Theme & Reset
+   ========================================= */
+:root {
+  --primary: #6366f1;         /* Premium Indigo */
+  --primary-hover: #4f46e5;
+  --primary-glow: rgba(99, 102, 241, 0.1);
+  --danger: #ef4444;
+  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+  --card-bg: #ffffff;
+  --text-main: #0f172a;       /* Deep Slate - Ensures text is visible */
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --radius: 16px;
+  --nav-height: 72px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================
+   2. Professional Top Navbar (Dashboard Header)
+   ========================================= */
+.dashboard-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px); /* Glassmorphism effect */
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5%;
+  z-index: 1000;
+}
+
+.dashboard-header h1 {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.02em;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.user-info span {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* =========================================
+   3. Main Container Logic
+   ========================================= */
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Center Auth Pages (Login/Register) */
+.container[style*="maxWidth: 500px"], 
+.container[style*="max-width: 500px"] {
+  justify-content: center;
+  align-items: center;
+  max-width: 440px !important;
+  margin-top: 0 !important; 
+}
+
+/* Dashboard Spacing (Accounts for fixed Navbar) */
+.container:not([style*="maxWidth"]) {
+  margin-top: calc(var(--nav-height) + 40px);
+}
+
+/* =========================================
+   4. Cards & Components
+   ========================================= */
+.card {
+  background: var(--card-bg);
+  padding: 35px;
+  border-radius: 24px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 
+              0 20px 48px -10px rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  width: 100%;
+}
+
+.create-form {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+/* --- CORRECTED INPUT SECTION --- */
+input {
+  width: 100%;
+  padding: 14px 18px;
+  background: #ffffff;       /* Solid white background */
+  color: var(--text-main);    /* Explicit dark text color so you can see typing */
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+input::placeholder {
+  color: var(--text-muted);   /* Lighter color for placeholder */
+  opacity: 0.6;
+}
+
+input:focus {
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+}
+
+.btn-danger {
+  background: #fee2e2;
+  color: var(--danger);
+  border: 1px solid #fecaca;
+}
+
+.btn-danger:hover {
+  background: var(--danger);
+  color: white;
+}
+
+/* =========================================
+   5. Table Styling
+   ========================================= */
+.table-responsive {
+  margin-top: 20px;
+  background: white;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.url-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.url-table th {
+  background: #f8fafc;
+  padding: 18px 20px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.url-table td {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text-main); /* Ensures table text is also visible */
+}
+
+.url-table tr:hover {
+  background-color: #f1f5f9;
+}
+
+.truncate {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.error-text {
+  color: var(--danger);
+  background: #fef2f2;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}

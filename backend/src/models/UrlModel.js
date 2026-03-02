@@ -1,0 +1,60 @@
+// src/models/UrlModel.js
+import { query } from '../config/db.js';
+import { encode } from '../utils/base62.js';
+
+class UrlModel {
+    
+    // 1. Create a Short URL
+    static async create(originalUrl, userId = null) {
+        // Step A: Insert the URL first to get a unique ID (Postgres does this with SERIAL)
+        const sqlInsert = `
+            INSERT INTO urls (original_url, user_id, short_code) 
+            VALUES ($1, $2, 'temp') 
+            RETURNING id;
+        `;
+        const { rows } = await query(sqlInsert, [originalUrl, userId]);
+        const id = rows[0].id;
+
+        // Step B: Encode that ID into a Short Code (e.g., ID 105 -> "1H")
+        const shortCode = encode(id);
+
+        // Step C: Update the row with the actual unique short code
+        const sqlUpdate = `
+            UPDATE urls 
+            SET short_code = $1 
+            WHERE id = $2 
+            RETURNING *;
+        `;
+        const result = await query(sqlUpdate, [shortCode, id]);
+        return result.rows[0];
+    }
+
+    // 2. Find by Short Code (For Redirects)
+    static async findByShortCode(shortCode) {
+        const sql = `SELECT * FROM urls WHERE short_code = $1`;
+        const { rows } = await query(sql, [shortCode]);
+        return rows[0];
+    }
+
+    // 3. Increment Click Count (Analytics)
+    static async incrementClicks(id) {
+        const sql = `
+            UPDATE urls 
+            SET click_count = click_count + 1 
+            WHERE short_code = $1;
+        `;
+        await query(sql, [id]);
+    }
+    // 4. Find all URLs for a specific User
+    static async findByUser(userId) {
+        const sql = `
+            SELECT * FROM urls 
+            WHERE user_id = $1 
+            ORDER BY created_at DESC;
+        `;
+        const { rows } = await query(sql, [userId]);
+        return rows;
+    }
+}
+
+export default UrlModel;
