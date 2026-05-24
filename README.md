@@ -1,8 +1,8 @@
 # 🚀 Scalable URL Shortener
 
-**Live Demo:** [https://url-shortener-phi-vert.vercel.app/login]
+**Live Demo:** https://url-shortener-phi-vert.vercel.app/login
 
-**Backend API Base URL:** [https://url-shortener-dmyt.onrender.com]
+**Backend API Base URL:** https://url-shortener-dmyt.onrender.com
 
 A full-stack, production-ready URL shortener designed to handle high-volume read traffic. Built to demonstrate real-world system design principles, caching strategies, and containerized deployment.
 
