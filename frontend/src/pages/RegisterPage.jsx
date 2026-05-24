@@ -16,7 +16,7 @@ const RegisterPage = () => {
     e.preventDefault();
     setError('');
     try {
-      await axios.post('http://localhost:3000/api/auth/register', formData);
+      await axios.post('https://url-shortener-dmyt.onrender.com/api/auth/register', formData);
       alert('Registration Successful! Please login.');
       navigate('/login');
     } catch (err) {

@@ -24,7 +24,7 @@ const Dashboard = () => {
 
   const fetchUrls = async (token) => {
     try {
-      const res = await axios.get('http://localhost:3000/myurls', { 
+      const res = await axios.get('https://url-shortener-dmyt.onrender.com/myurls', { 
         headers: { Authorization: `Bearer ${token}` }
       });
       setUrls(res.data.urls);
@@ -37,7 +37,7 @@ const Dashboard = () => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     try {
-      await axios.post('http://localhost:3000/shorten', 
+      await axios.post('https://url-shortener-dmyt.onrender.com/shorten', 
         { originalUrl: longUrl },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -101,8 +101,8 @@ const Dashboard = () => {
                 <tr key={url.id}>
                   <td className="truncate" title={url.original_url}>{url.original_url}</td>
                   <td>
-                    <a href={`http://localhost:3000/${url.short_code}`} target="_blank" rel="noopener noreferrer">
-                      http://localhost:3000/{url.short_code}
+                    <a href={`https://url-shortener-dmyt.onrender.com/${url.short_code}`} target="_blank" rel="noopener noreferrer">
+                      https://url-shortener-dmyt.onrender.com/{url.short_code}
                     </a>
                   </td>
                   <td>{url.click_count}</td>
