@@ -1,6 +1,6 @@
 # 🚀 Scalable URL Shortener
 
-**Live Demo:** https://url-shortener-phi-vert.vercel.app/login
+**Live Demo:** url-shortener-phi-vert.vercel.app
 
 **Backend API Base URL:** https://url-shortener-dmyt.onrender.com
 
