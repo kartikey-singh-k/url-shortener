@@ -11,7 +11,7 @@ const startServer = async () => {
         // 1. Test Database Connection
         const dbRes = await query('SELECT NOW()');
         console.log('✅ Database Connected. Time:', dbRes.rows[0].now);
-        await initDB()
+        await initDB();
         // 2. Connect to Redis Cache
         await connectRedis(); // ✅ CONNECT TO REDIS
 
