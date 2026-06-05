@@ -103,7 +103,7 @@ const Dashboard = () => {
       <header className="db-nav">
         <div className="db-nav-logo">
           <span className="db-nav-icon">&#9889;</span>
-          <span className="db-nav-brand">Shortify</span>
+          <span className="db-nav-brand">Url Shortener</span>
         </div>
         <div className="db-nav-right">
           <span className="db-nav-email">{user?.email}</span>
