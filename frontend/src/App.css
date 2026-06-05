@@ -1,239 +1,546 @@
 /* =========================================
-   1. Global Theme & Reset
+   Global reset
    ========================================= */
-:root {
-  --primary: #6366f1;         /* Premium Indigo */
-  --primary-hover: #4f46e5;
-  --primary-glow: rgba(99, 102, 241, 0.1);
-  --danger: #ef4444;
-  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
-  --card-bg: #ffffff;
-  --text-main: #0f172a;       /* Deep Slate - Ensures text is visible */
-  --text-muted: #64748b;
-  --border: #e2e8f0;
-  --radius: 16px;
-  --nav-height: 72px;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: 'Inter', -apple-system, system-ui, sans-serif;
-  background: var(--bg-gradient);
-  color: var(--text-main);
+  background: #f1f5f9;
+  color: #0f172a;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 /* =========================================
-   2. Professional Top Navbar (Dashboard Header)
+   Navbar
    ========================================= */
-.dashboard-header {
+.db-nav {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--nav-height);
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px); /* Glassmorphism effect */
-  border-bottom: 1px solid var(--border);
+  top: 0; left: 0; right: 0;
+  height: 64px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #e2e8f0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 0 5%;
-  z-index: 1000;
+  z-index: 100;
 }
 
-.dashboard-header h1 {
-  font-size: 22px;
+.db-nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.db-nav-icon {
+  font-size: 20px;
+}
+
+.db-nav-brand {
+  font-size: 18px;
   font-weight: 800;
-  color: var(--primary);
+  color: #6366f1;
   letter-spacing: -0.02em;
 }
 
-.user-info {
+.db-nav-right {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 14px;
 }
 
-.user-info span {
-  font-size: 14px;
+.db-nav-email {
+  font-size: 13px;
   font-weight: 500;
-  color: var(--text-muted);
+  color: #64748b;
+}
+
+.btn-logout {
+  padding: 8px 16px;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.btn-logout:hover {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
 }
 
 /* =========================================
-   3. Main Container Logic
+   Main layout
    ========================================= */
-.container {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-  flex: 1;
+.db-root {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
-/* Center Auth Pages (Login/Register) */
-.container[style*="maxWidth: 500px"], 
-.container[style*="max-width: 500px"] {
-  justify-content: center;
-  align-items: center;
-  max-width: 440px !important;
-  margin-top: 0 !important; 
-}
-
-/* Dashboard Spacing (Accounts for fixed Navbar) */
-.container:not([style*="maxWidth"]) {
-  margin-top: calc(var(--nav-height) + 40px);
+.db-main {
+  margin-top: 64px;
+  padding: 32px 5% 60px;
+  max-width: 960px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
 /* =========================================
-   4. Cards & Components
+   Create card
    ========================================= */
-.card {
-  background: var(--card-bg);
-  padding: 35px;
+.db-card {
+  background: #ffffff;
   border-radius: 24px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 
-              0 20px 48px -10px rgba(99, 102, 241, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  width: 100%;
+  border: 1px solid #e2e8f0;
+  padding: 32px 36px;
+  box-shadow: 0 4px 24px rgba(99,102,241,0.06);
 }
 
-.create-form {
+.db-card-head {
+  margin-bottom: 20px;
+}
+
+.db-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.db-card-sub {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 3px;
+}
+
+/* =========================================
+   Error banner
+   ========================================= */
+.db-error {
   display: flex;
-  flex-direction: column; /* Stacks the elements vertically */
-  gap: 16px;
-  margin-top: 20px;
-}
-
-.options-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-}
-
-.create-form .btn-primary {
-  padding: 16px;
-  font-size: 16px;
-  margin-top: 8px;
-}
-/* --- CORRECTED INPUT SECTION --- */
-input {
-  width: 100%;
-  padding: 14px 18px;
-  background: #ffffff;       /* Solid white background */
-  color: var(--text-main);    /* Explicit dark text color so you can see typing */
-  border: 2px solid var(--border);
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
   border-radius: 12px;
-  font-size: 16px;
-  transition: all 0.2s ease;
+  font-size: 13px;
+  color: #dc2626;
+  margin-bottom: 16px;
+}
+
+.db-error-icon {
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+/* =========================================
+   Form
+   ========================================= */
+.db-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.db-input-wrap {
+  position: relative;
+}
+
+.db-input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #94a3b8;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.db-input {
+  width: 100%;
+  padding: 13px 16px 13px 40px;
+  background: #ffffff;
+  color: #0f172a;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: inherit;
   outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
 }
 
-input::placeholder {
-  color: var(--text-muted);   /* Lighter color for placeholder */
-  opacity: 0.6;
+.db-input::placeholder {
+  color: #94a3b8;
 }
 
-input:focus {
-  border-color: var(--primary);
-  background: white;
-  box-shadow: 0 0 0 4px var(--primary-glow);
+.db-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99,102,241,0.08);
 }
 
-.btn {
-  padding: 12px 24px;
+/* datetime-local fix */
+input[type="datetime-local"].db-input {
+  color: #0f172a;
+}
+
+/* =========================================
+   Advanced section + toggle chips
+   ========================================= */
+.db-advanced-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.db-advanced-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.db-chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.db-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 40px;
+  background: #ffffff;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748b;
+  transition: all 0.18s;
+  user-select: none;
+}
+
+.db-chip:hover {
+  border-color: #c7d2fe;
+  color: #4f46e5;
+}
+
+.db-chip.db-chip-on {
+  border-color: #6366f1;
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+/* Dot indicator inside chip */
+.db-chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c7d2fe;
+  flex-shrink: 0;
+  transition: background 0.18s;
+}
+
+.db-chip.db-chip-on .db-chip-dot {
+  background: #6366f1;
+}
+
+/* Mini toggle switch inside chip */
+.db-chip-toggle {
+  width: 30px;
+  height: 16px;
+  border-radius: 8px;
+  background: #cbd5e1;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.18s;
+  display: block;
+}
+
+.db-chip-toggle.db-chip-toggle-on {
+  background: #6366f1;
+}
+
+.db-chip-knob {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffffff;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.18s;
+  display: block;
+}
+
+.db-chip-toggle.db-chip-toggle-on .db-chip-knob {
+  transform: translateX(14px);
+}
+
+/* =========================================
+   Expanded fields
+   ========================================= */
+.db-expanded {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.28s ease, opacity 0.2s ease;
+}
+
+.db-expanded.db-expanded-open {
+  max-height: 400px;
+  opacity: 1;
+}
+
+.db-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.db-field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  padding-left: 2px;
+}
+
+.db-field-hint {
+  font-size: 11px;
+  color: #94a3b8;
+  padding-left: 2px;
+}
+
+/* =========================================
+   Submit button
+   ========================================= */
+.btn-primary {
+  width: 100%;
+  padding: 15px;
+  background: #6366f1;
+  color: #ffffff;
   border: none;
   border-radius: 12px;
+  font-size: 15px;
   font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-primary {
-  background: var(--primary);
-  color: white;
+  transition: all 0.18s;
+  margin-top: 4px;
 }
 
 .btn-primary:hover {
-  background: var(--primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+  background: #4f46e5;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(99,102,241,0.2);
 }
 
-.btn-danger {
-  background: #fee2e2;
-  color: var(--danger);
-  border: 1px solid #fecaca;
-}
-
-.btn-danger:hover {
-  background: var(--danger);
-  color: white;
+.btn-primary:active {
+  transform: translateY(0);
 }
 
 /* =========================================
-   5. Table Styling
+   Links table section
    ========================================= */
-.table-responsive {
-  margin-top: 20px;
-  background: white;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+.db-table-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.url-table {
+.db-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.db-table-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.db-table-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.db-empty {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.db-empty-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.db-empty-text {
+  font-size: 14px;
+  color: #64748b;
+}
+
+.db-table-wrap {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.db-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
-.url-table th {
+.db-table th {
   background: #f8fafc;
-  padding: 18px 20px;
+  padding: 14px 16px;
   text-align: left;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  color: var(--text-muted);
+  color: #94a3b8;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-.url-table td {
-  padding: 18px 20px;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
-  color: var(--text-main); /* Ensures table text is also visible */
+/* Column widths */
+.db-table th:nth-child(1), .db-table td:nth-child(1) { width: 32%; }
+.db-table th:nth-child(2), .db-table td:nth-child(2) { width: 18%; }
+.db-table th:nth-child(3), .db-table td:nth-child(3) { width: 9%; }
+.db-table th:nth-child(4), .db-table td:nth-child(4) { width: 9%; }
+.db-table th:nth-child(5), .db-table td:nth-child(5) { width: 20%; }
+.db-table th:nth-child(6), .db-table td:nth-child(6) { width: 12%; }
+
+.db-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 13px;
+  color: #0f172a;
+  vertical-align: middle;
 }
 
-.url-table tr:hover {
-  background-color: #f1f5f9;
+.db-table tr:last-child td {
+  border-bottom: none;
 }
 
-.truncate {
-  max-width: 300px;
+.db-table tr:hover td {
+  background: #fafbff;
+}
+
+.db-url-truncate {
+  display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--primary);
-  font-weight: 600;
-  text-decoration: none;
+  color: #64748b;
+  font-size: 13px;
 }
 
-.error-text {
-  color: var(--danger);
-  background: #fef2f2;
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  text-align: center;
+.db-short-link {
+  color: #6366f1;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.db-short-link:hover {
+  text-decoration: underline;
+}
+
+/* Badges */
+.db-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.db-badge-blue {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.db-badge-gray {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+/* Expiry text */
+.db-expiry {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.db-expiry.db-expiry-dead {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* Copy button */
+.btn-copy {
+  padding: 6px 14px;
+  background: #f8fafc;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+
+.btn-copy:hover {
+  background: #eef2ff;
+  color: #4f46e5;
+  border-color: #c7d2fe;
+}
+
+.btn-copy.btn-copy-done {
+  background: #f0fdf4;
+  color: #16a34a;
+  border-color: #bbf7d0;
+}
+
+/* =========================================
+   Responsive
+   ========================================= */
+@media (max-width: 640px) {
+  .db-main { padding: 24px 4% 40px; }
+  .db-card { padding: 24px 20px; }
+  .db-chips { gap: 8px; }
+  .db-table th:nth-child(1), .db-table td:nth-child(1) { width: 40%; }
+  .db-table th:nth-child(5), .db-table td:nth-child(5) { display: none; }
+  .db-nav-email { display: none; }
 }
