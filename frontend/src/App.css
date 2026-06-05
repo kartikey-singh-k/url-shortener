@@ -2,13 +2,13 @@
    1. Global Theme & Reset
    ========================================= */
 :root {
-  --primary: #6366f1;         /* Premium Indigo */
+  --primary: #6366f1;        /* Premium Indigo */
   --primary-hover: #4f46e5;
   --primary-glow: rgba(99, 102, 241, 0.1);
   --danger: #ef4444;
   --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
   --card-bg: #ffffff;
-  --text-main: #0f172a;       /* Deep Slate - Ensures text is visible */
+  --text-main: #0f172a;      /* Deep Slate - Ensures text is visible */
   --text-muted: #64748b;
   --border: #e2e8f0;
   --radius: 16px;
@@ -115,23 +115,64 @@ body {
   margin-top: 20px;
 }
 
-.options-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-}
-
 .create-form .btn-primary {
   padding: 16px;
   font-size: 16px;
   margin-top: 8px;
 }
-/* --- CORRECTED INPUT SECTION --- */
+
+/* =========================================
+   5. Advanced Options & Toggles
+   ========================================= */
+.toggle-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 5px;
+}
+
+.toggle-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  background-color: var(--border);
+  color: var(--text-muted);
+}
+
+.toggle-btn:hover {
+  background-color: #cbd5e1;
+}
+
+.toggle-btn.active {
+  background-color: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 4px 10px var(--primary-glow);
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   6. Input Fields
+   ========================================= */
 input {
   width: 100%;
   padding: 14px 18px;
-  background: #ffffff;       /* Solid white background */
-  color: var(--text-main);    /* Explicit dark text color so you can see typing */
+  background: #ffffff;       
+  color: var(--text-main);    
   border: 2px solid var(--border);
   border-radius: 12px;
   font-size: 16px;
@@ -140,7 +181,7 @@ input {
 }
 
 input::placeholder {
-  color: var(--text-muted);   /* Lighter color for placeholder */
+  color: var(--text-muted);   
   opacity: 0.6;
 }
 
@@ -150,6 +191,9 @@ input:focus {
   box-shadow: 0 0 0 4px var(--primary-glow);
 }
 
+/* =========================================
+   7. Buttons
+   ========================================= */
 .btn {
   padding: 12px 24px;
   border: none;
@@ -182,7 +226,7 @@ input:focus {
 }
 
 /* =========================================
-   5. Table Styling
+   8. Table Styling
    ========================================= */
 .table-responsive {
   margin-top: 20px;
@@ -212,7 +256,7 @@ input:focus {
   padding: 18px 20px;
   border-bottom: 1px solid var(--border);
   font-size: 14px;
-  color: var(--text-main); /* Ensures table text is also visible */
+  color: var(--text-main); 
 }
 
 .url-table tr:hover {
