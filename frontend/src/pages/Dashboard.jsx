@@ -6,7 +6,7 @@ const Dashboard = () => {
   const [urls, setUrls] = useState([]);
   const [longUrl, setLongUrl] = useState('');
   
-  // New state variables for the advanced features
+  // Advanced features state variables
   const [customAlias, setCustomAlias] = useState('');
   const [maxClicks, setMaxClicks] = useState('');
   const [expiresAt, setExpiresAt] = useState('');
@@ -98,28 +98,26 @@ const Dashboard = () => {
       {/* Create Link Section */}
       <div className="card">
         <h3>Create New Link</h3>
-        {error && <p className="error-text" style={{color: 'red', fontWeight: 'bold'}}>{error}</p>}
+        {error && <p className="error-text">{error}</p>}
         
+        {/* ✅ CLEANED UP FORM: CSS handles the layout now */}
         <form onSubmit={handleSubmit} className="create-form">
-          <div style={{ marginBottom: '10px' }}>
-            <input 
-              type="url" 
-              placeholder="Paste long URL here (https://...)" 
-              value={longUrl} 
-              onChange={(e) => setLongUrl(e.target.value)} 
-              required 
-              style={{ width: '100%', padding: '10px', boxSizing: 'border-box' }}
-            />
-          </div>
           
-          {/* Advanced Options Row */}
-          <div style={{ display: 'flex', gap: '10px', marginBottom: '15px', flexWrap: 'wrap' }}>
+          <input 
+            type="url" 
+            placeholder="Paste long URL here (https://...)" 
+            value={longUrl} 
+            onChange={(e) => setLongUrl(e.target.value)} 
+            required 
+          />
+          
+          {/* Advanced Options Grid */}
+          <div className="options-grid">
             <input 
               type="text" 
               placeholder="Custom Alias (optional)" 
               value={customAlias} 
               onChange={(e) => setCustomAlias(e.target.value)} 
-              style={{ flex: '1 1 150px', padding: '8px' }}
             />
             <input 
               type="number" 
@@ -127,18 +125,16 @@ const Dashboard = () => {
               value={maxClicks} 
               onChange={(e) => setMaxClicks(e.target.value)} 
               min="1"
-              style={{ flex: '1 1 150px', padding: '8px' }}
             />
             <input 
               type="datetime-local" 
               value={expiresAt} 
               onChange={(e) => setExpiresAt(e.target.value)} 
-              style={{ flex: '1 1 150px', padding: '8px' }}
               title="Expiration Date (optional)"
             />
           </div>
 
-          <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Shorten Link</button>
+          <button type="submit" className="btn btn-primary">Shorten Link</button>
         </form>
       </div>
 
@@ -146,7 +142,7 @@ const Dashboard = () => {
       <h3>Your Links</h3>
       {urls.length === 0 ? <p>No links yet. Create one above!</p> : (
         <div className="table-responsive">
-          <table className="url-table" style={{ width: '100%', textAlign: 'left' }}>
+          <table className="url-table">
             <thead>
               <tr>
                 <th>Original URL</th>
@@ -159,7 +155,7 @@ const Dashboard = () => {
             <tbody>
               {urls.map((url) => (
                 <tr key={url.id}>
-                  <td className="truncate" title={url.original_url} style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <td className="truncate" title={url.original_url}>
                     {url.original_url}
                   </td>
                   <td>

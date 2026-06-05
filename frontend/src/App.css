@@ -110,10 +110,22 @@ body {
 
 .create-form {
   display: flex;
-  gap: 12px;
-  margin-top: 15px;
+  flex-direction: column; /* Stacks the elements vertically */
+  gap: 16px;
+  margin-top: 20px;
 }
 
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.create-form .btn-primary {
+  padding: 16px;
+  font-size: 16px;
+  margin-top: 8px;
+}
 /* --- CORRECTED INPUT SECTION --- */
 input {
   width: 100%;
