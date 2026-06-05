@@ -294,7 +294,7 @@ const Dashboard = () => {
                       </td>
                       <td>
                         <span className="db-badge db-badge-gray">
-                          {url.max_clicks ? url.max_clicks : '&#8734;'}
+                          {url.max_clicks ? url.max_clicks : '∞'}
                         </span>
                       </td>
                       <td>
@@ -308,7 +308,7 @@ const Dashboard = () => {
                           onClick={() => handleCopy(url.short_code)}
                           title="Copy short link"
                         >
-                          {copied === url.short_code ? '&#10003; Copied' : 'Copy'}
+                          {copied === url.short_code ? '✓ Copied' : 'Copy'}
                         </button>
                       </td>
                     </tr>
