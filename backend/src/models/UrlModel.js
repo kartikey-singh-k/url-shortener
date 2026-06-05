@@ -72,9 +72,12 @@ class UrlModel {
         const sql = `
             UPDATE urls 
             SET click_count = click_count + 1 
-            WHERE short_code = $1;
+            WHERE short_code = $1
+            RETURNING click_count, max_clicks; 
         `;
-        await query(sql, [shortCode]);
+        // ✅ FIX: Added the RETURNING clause and return rows[0] so the controller can trigger the Redis tripwire
+        const { rows } = await query(sql, [shortCode]);
+        return rows[0];
     }
     
     // 4. Find all URLs for a specific User
