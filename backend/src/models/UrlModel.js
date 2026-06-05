@@ -8,7 +8,7 @@ class UrlModel {
     static async create(originalUrl, userId = null, customAlias = null, expiresAt = null, maxClicks = null) {
         
         // ---------------------------------------------------------
-        // PATH A: User provided a Custom Alias (One-step insert)
+        // PATH A: User provided a Custom Alias 
         // ---------------------------------------------------------
         if (customAlias) {
             try {
@@ -29,7 +29,7 @@ class UrlModel {
         }
 
         // ---------------------------------------------------------
-        // PATH B: Auto-generate via ID-Encoding (Your 2-step method)
+        // PATH B: Auto-generate via ID-Encoding 
         // ---------------------------------------------------------
         
         // Use a randomized temp code to prevent unique constraint crashes 
@@ -75,7 +75,6 @@ class UrlModel {
             WHERE short_code = $1
             RETURNING click_count, max_clicks; 
         `;
-        // ✅ FIX: Added the RETURNING clause and return rows[0] so the controller can trigger the Redis tripwire
         const { rows } = await query(sql, [shortCode]);
         return rows[0];
     }
