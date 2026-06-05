@@ -3,7 +3,7 @@ import 'dotenv/config';
 import app from './app.js'; 
 import { query, initDB } from './config/db.js';
 import { connectRedis } from './config/redis.js'; // ✅ IMPORT REDIS
-
+import startCleanupJob from './jobs/cleanupJob.js';
 const PORT = process.env.PORT || 3000;
 
 const startServer = async () => {
@@ -14,7 +14,7 @@ const startServer = async () => {
         await initDB();
         // 2. Connect to Redis Cache
         await connectRedis(); // ✅ CONNECT TO REDIS
-
+        startCleanupJob(); // ✅ START BACKGROUND JOB
         // 3. Start Express Server (Only if DB and Redis succeed)
         app.listen(PORT, () => {
             console.log(`\n🚀 Server running on http://localhost:${PORT}`);
