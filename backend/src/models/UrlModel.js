@@ -34,7 +34,8 @@ class UrlModel {
         
         // Use a randomized temp code to prevent unique constraint crashes 
         // if two people generate links at the exact same millisecond
-        const tempCode = `temp_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+        // Generates a random 8-character string (e.g., 'x8f9p2kq') 
+        const tempCode = Math.random().toString(36).substring(2, 10);
         
         // Step A: Insert the URL first to get a unique ID
         const sqlInsert = `
