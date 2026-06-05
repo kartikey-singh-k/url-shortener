@@ -40,6 +40,8 @@ export const initDB = async () => {
             short_code VARCHAR(10) UNIQUE NOT NULL,
             user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
             click_count INTEGER DEFAULT 0,
+            expires_at TIMESTAMP WITH TIME ZONE NULL,
+            max_clicks INTEGER NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     `;
