@@ -11,7 +11,7 @@ const Dashboard = () => {
   const [maxClicks, setMaxClicks] = useState('');
   const [expiresAt, setExpiresAt] = useState('');
 
-  // ✅ NEW: Toggle state variables for the advanced fields
+  // Toggle state variables for the advanced fields
   const [showAlias, setShowAlias] = useState(false);
   const [showClicks, setShowClicks] = useState(false);
   const [showExpiry, setShowExpiry] = useState(false);
@@ -51,7 +51,7 @@ const Dashboard = () => {
     setError(''); 
 
     try {
-      // ✅ UPDATED: Only send the advanced data if the toggle is actually turned ON
+      // Only send the advanced data if the toggle is actually turned ON
       const payload = { 
         originalUrl: longUrl,
         customAlias: (showAlias && customAlias) ? customAlias : undefined,
@@ -114,49 +114,37 @@ const Dashboard = () => {
             value={longUrl} 
             onChange={(e) => setLongUrl(e.target.value)} 
             required 
-            style={{ marginBottom: '10px' }}
           />
 
-          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '10px' }}>
+          {/* Cleaned up Toggles using CSS classes */}
+          <div className="toggle-group">
             <button 
               type="button" 
+              className={`toggle-btn ${showAlias ? 'active' : ''}`}
               onClick={() => setShowAlias(!showAlias)}
-              style={{
-                padding: '8px 16px', borderRadius: '20px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '13px', transition: 'all 0.2s ease',
-                backgroundColor: showAlias ? 'var(--primary)' : '#e2e8f0',
-                color: showAlias ? '#ffffff' : 'var(--text-muted)'
-              }}
             >
               {showAlias ? '✓ Custom Alias' : '+ Custom Alias'}
             </button>
 
             <button 
               type="button" 
+              className={`toggle-btn ${showClicks ? 'active' : ''}`}
               onClick={() => setShowClicks(!showClicks)}
-              style={{
-                padding: '8px 16px', borderRadius: '20px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '13px', transition: 'all 0.2s ease',
-                backgroundColor: showClicks ? 'var(--primary)' : '#e2e8f0',
-                color: showClicks ? '#ffffff' : 'var(--text-muted)'
-              }}
             >
               {showClicks ? '✓ Max Clicks' : '+ Max Clicks'}
             </button>
 
             <button 
               type="button" 
+              className={`toggle-btn ${showExpiry ? 'active' : ''}`}
               onClick={() => setShowExpiry(!showExpiry)}
-              style={{
-                padding: '8px 16px', borderRadius: '20px', border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '13px', transition: 'all 0.2s ease',
-                backgroundColor: showExpiry ? 'var(--primary)' : '#e2e8f0',
-                color: showExpiry ? '#ffffff' : 'var(--text-muted)'
-              }}
             >
               {showExpiry ? '✓ Expiry Date' : '+ Expiry Date'}
             </button>
           </div>
           
           {(showAlias || showClicks || showExpiry) && (
-            <div className="options-grid" style={{ marginBottom: '15px' }}>
+            <div className="options-grid">
               {showAlias && (
                 <input 
                   type="text" 
