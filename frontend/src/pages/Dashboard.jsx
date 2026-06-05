@@ -139,11 +139,9 @@ const Dashboard = () => {
               className={`toggle-btn ${showExpiry ? 'active' : ''}`}
               onClick={() => {
                 setShowExpiry(!showExpiry);
-                // If turning it on, set a default time for 24 hours from now so the field isn't empty!
                 if (!showExpiry && !expiresAt) {
                   const tomorrow = new Date();
                   tomorrow.setHours(tomorrow.getHours() + 24);
-                  // Format to YYYY-MM-DDTHH:mm for the input field
                   setExpiresAt(tomorrow.toISOString().slice(0, 16));
                 }
               }}
