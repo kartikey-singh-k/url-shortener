@@ -176,7 +176,12 @@ const Dashboard = () => {
                   type="text" 
                   placeholder="Custom Alias (e.g. summer-sale)" 
                   value={customAlias} 
-                  onChange={(e) => setCustomAlias(e.target.value)} 
+                  maxLength={10} /*Prevents typing more than 10 characters */
+                  onChange={(e) => {
+                    //Automatically removes spaces and makes it lowercase!
+                    const formattedAlias = e.target.value.replace(/\s+/g, '-').toLowerCase();
+                    setCustomAlias(formattedAlias);
+                  }} 
                 />
               )}
               

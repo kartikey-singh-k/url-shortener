@@ -77,8 +77,17 @@ export const redirectUrl = async (req, res) => {
         console.log('🐌 CACHE MISS! Searching Database.');
         const urlRecord = await UrlModel.findByShortCode(shortCode);
 
-        if (!urlRecord) {
-            return res.status(404).json({ error: 'URL not found' });
+        // Validation
+        if (!originalUrl) {
+            return res.status(400).json({ error: 'originalUrl is required' });
+        }
+        if (customAlias) {
+            if (customAlias.length > 10) {
+                return res.status(400).json({ error: 'Alias must be 10 characters or less' });
+            }
+            if (!/^[a-zA-Z0-9-]+$/.test(customAlias)) {
+                return res.status(400).json({ error: 'Alias can only contain letters, numbers, and hyphens' });
+            }
         }
 
         if (urlRecord.expires_at && new Date() >= new Date(urlRecord.expires_at)) {
