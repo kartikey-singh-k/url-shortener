@@ -114,3 +114,32 @@ button:focus-visible {
 @keyframes popIn {
   to { transform: scale(1); }
 }
+/* =========================================
+   Navbar Logo Styling
+   ========================================= */
+.brand-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-logo {
+  height: 40px !important; /* Forces the height to be exactly 40px */
+  max-width: 180px; /* Prevents extremely wide logos from taking over */
+  width: auto;
+  object-fit: contain; /* Ensures the logo scales perfectly without squishing */
+  display: block;
+}
+
+/* Optional: Make the Dashboard title match the sleek logo */
+.brand-container h1 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 40px; /* Perfectly aligns the text vertically with the 40px logo */
+}
+.qr-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px; /* Adds perfect spacing between the icon and the text */
+}
