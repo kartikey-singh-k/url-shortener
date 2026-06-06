@@ -29,7 +29,6 @@ export const shortenUrl = async (req, res) => {
     } catch (error) {
         console.error('Shorten Error:', error);
         
-        // ✅ FIX 1: Catch custom alias error and send it nicely to the React frontend
         if (error.message === 'Custom alias is already in use. Please choose another.') {
             return res.status(400).json({ error: error.message });
         }

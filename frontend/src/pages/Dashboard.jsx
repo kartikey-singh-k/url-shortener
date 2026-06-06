@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import myLogo from '../assets/logo.png';
 const Dashboard = () => {
   const [urls, setUrls] = useState([]);
   const [longUrl, setLongUrl] = useState('');
@@ -108,7 +108,11 @@ const Dashboard = () => {
     <div className="container">
       {/* Header Section */}
       <div className="dashboard-header">
-        <h1>📊 Dashboard</h1>
+        <div className="brand-container">
+          <img src={myLogo} alt="Logo" className="nav-logo" />
+          <h1>Dashboard</h1>
+        </div>
+
         <div className="user-info">
           <span>{user?.email}</span>
           <button onClick={handleLogout} className="btn btn-danger">Logout</button>
