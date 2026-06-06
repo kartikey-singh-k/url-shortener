@@ -16,6 +16,9 @@ const Dashboard = () => {
   const [showClicks, setShowClicks] = useState(false);
   const [showExpiry, setShowExpiry] = useState(false);
   
+  const [qrCode, setQrCode] = useState(null);
+  const [activeShortCode, setActiveShortCode] = useState('');
+  
   const [error, setError] = useState('');
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -82,6 +85,17 @@ const Dashboard = () => {
     }
   };
 
+  const handleGetQr = async (shortCode) => {
+    try {
+      const res = await axios.get(`${API_URL}/qr/${shortCode}`);
+      setQrCode(res.data.qrCode);
+      setActiveShortCode(shortCode);
+    } catch (err) {
+      console.error('Failed to get QR code', err);
+      alert('Could not generate QR code at this time.');
+    }
+  };
+
   const handleLogout = () => {
     if (window.confirm('Are you sure you want to logout?')) {
       localStorage.removeItem('token'); 
@@ -139,6 +153,7 @@ const Dashboard = () => {
               className={`toggle-btn ${showExpiry ? 'active' : ''}`}
               onClick={() => {
                 setShowExpiry(!showExpiry);
+                // Fix for the HTML datetime-local input bug
                 if (!showExpiry && !expiresAt) {
                   const tomorrow = new Date();
                   tomorrow.setHours(tomorrow.getHours() + 24);
@@ -198,6 +213,7 @@ const Dashboard = () => {
                 <th>Clicks</th>
                 <th>Click Limit</th>
                 <th>Expires At</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -214,12 +230,51 @@ const Dashboard = () => {
                   <td>{url.click_count}</td>
                   <td>{url.max_clicks ? url.max_clicks : '∞'}</td>
                   <td>{url.expires_at ? new Date(url.expires_at).toLocaleString() : 'Never'}</td>
+                  <td>
+                    <button 
+                      type="button"
+                      className="btn-secondary" 
+                      onClick={() => handleGetQr(url.short_code)}
+                    >
+                      📱 QR
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
+      {qrCode && (
+        <div className="modal-overlay" onClick={() => setQrCode(null)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <h3 style={{ marginBottom: '15px' }}>Scan to Visit</h3>
+            <img 
+              src={qrCode} 
+              alt="QR Code" 
+              style={{ borderRadius: '12px', border: '1px solid var(--border)', maxWidth: '100%' }} 
+            />
+            <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
+              {/* Native HTML5 Download Attribute */}
+              <a 
+                href={qrCode} 
+                download={`qr-${activeShortCode}.png`} 
+                className="btn btn-primary" 
+                style={{ textDecoration: 'none' }}
+              >
+                ⬇️ Download
+              </a>
+              <button 
+                className="btn btn-danger" 
+                onClick={() => setQrCode(null)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
