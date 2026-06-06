@@ -34,6 +34,7 @@ app.get('/health', (req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.get('/favicon.ico', (req, res) => res.status(204).end());
 app.use('/', urlRoutes);
 
 // 404 Handler
