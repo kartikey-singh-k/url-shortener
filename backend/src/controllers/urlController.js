@@ -63,27 +63,26 @@ export const redirectUrl = async (req, res) => {
     try {
         const { shortCode } = req.params;
 
-       // 1. Check Cache First
+        // 1. Check Cache First (RAM is fast!)
         const cachedUrl = await redisClient.get(`url:${shortCode}`);
 
         if (cachedUrl) {
-            // ✅ FIX: Inject req.id into the log!
-            console.log(`[${req.id}] ⚡ CACHE HIT! Redirecting instantly.`);
+            console.log('⚡ CACHE HIT! Redirecting instantly.');
             
+
+            // Update clicks in the background and check if it just hit the limit
             UrlModel.incrementClicks(shortCode).then(async (updatedRecord) => {
                 if (updatedRecord && updatedRecord.max_clicks !== null && updatedRecord.click_count >= updatedRecord.max_clicks) {
-                    // ✅ FIX: Inject req.id into the log!
-                    console.log(`[${req.id}] 🛑 Limit reached for ${shortCode}. Destroying Redis cache.`);
+                    console.log(`🛑 Limit reached for ${shortCode}. Destroying Redis cache.`);
                     await redisClient.del(`url:${shortCode}`);
                 }
-            }).catch(err => console.error(`[${req.id}] Tripwire Error:`, err));
+            }).catch(err => console.error(err));
             
             return res.redirect(cachedUrl);
         }
 
-        // 2. Cache Miss: Query Database 
-        // ✅ FIX: Inject req.id into the log!
-        console.log(`[${req.id}] 🐌 CACHE MISS! Searching Database.`);
+        // 2. Cache Miss: Query Database (Disk is slow)
+        console.log('🐌 CACHE MISS! Searching Database.');
         const urlRecord = await UrlModel.findByShortCode(shortCode);
 
         if (!urlRecord) {
