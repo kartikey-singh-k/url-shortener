@@ -1,51 +1,140 @@
-# 🚀 Scalable URL Shortener
+# URL Shortener
 
-**Live Demo:** https://url-shortener-phi-vert.vercel.app/login
+**Live Demo:** [View Application](https://url-shortener-phi-vert.vercel.app/login) | **Backend API:** [Deployed on Render](https://url-shortener-dmyt.onrender.com)
 
-**Backend API Base URL:** https://url-shortener-dmyt.onrender.com
+A full-stack, production-ready URL shortener engineered to handle high-volume read traffic. Designed with real-world system design principles, featuring distributed caching, sliding-window rate limiting, and robust analytics.
 
-A full-stack, production-ready URL shortener designed to handle high-volume read traffic. Built to demonstrate real-world system design principles, caching strategies, and containerized deployment.
+![Dashboard Preview](./docs/dashboard.png)
 
 ---
 
-## ✨ Key Features
+## ✨ Features
 
-- 🔐 **User Authentication** – Secure JWT-based login and registration  
-- 🔗 **Link Shortening** – Converts long URLs into compressed Base62 codes  
-- ⚡ **High Performance** – Sub-millisecond redirects using Redis caching  
-- 📊 **Click Analytics** – Background tracking of link visits  
-- 📁 **Personal Dashboard** – Users can manage and monitor their generated links  
+- [x] **Secure Authentication** — JWT-based login and registration
+- [x] **Advanced Link Generation** — Supports auto-generated Base62 codes or custom aliases
+- [x] **Link Expiration & Limits** — Set time-based expiry dates or maximum click thresholds
+- [x] **QR Code Generation** — Server-side Base64 QR code rendering for seamless physical-to-digital routing
+- [x] **High-Performance Caching** — Upstash Redis implementation using the Cache-Aside pattern for sub-millisecond reads
+- [x] **Sliding-Window Rate Limiting** — Redis-backed rate limiter protecting endpoints from abuse (100 req/hr for Auth, 10 req/hr for Anonymous)
+- [x] **Enterprise Observability** — Global error handling and `X-Request-ID` tracing injected into Morgan/Winston logs
+- [x] **Automated Maintenance** — `node-cron` background jobs to sweep and permanently delete expired links
+- [ ] *Future: Distributed ID Generation (Snowflake-style) & Message Queues (Kafka) for async analytics*
+
+---
+
+## 🏗 Architecture
+
+![Architecture Diagram](./docs/architecture.png)
+
+The system follows a highly scalable **4-Tier Architecture**:
+
+| Tier | Technology | Hosting |
+| :--- | :--- | :--- |
+| **Client Layer** | React / Vite | Vercel |
+| **Application Layer** | Node.js / Express | Render |
+| **Cache Layer** | Upstash Redis | Upstash (Managed) |
+| **Database Layer** | Neon PostgreSQL | Neon (Managed) |
+
+---
+
+## 📊 Performance Benchmarks
+
+Load testing was conducted using [k6](https://k6.io/) to simulate traffic spikes and measure system resilience. The test bypassed destination redirects to isolate and stress-test the internal infrastructure.
+
+**Test Configuration:**
+- **Virtual Users (VUs):** 100 Concurrent
+- **Duration:** 60 Seconds
+- **Target Scenario:** Cache-Hit Redirect (Redis)
+- **Environment:** Free-tier cloud infrastructure tested from India to US/EU region
+
+| Metric | Value | Notes |
+| :--- | :--- | :--- |
+| **Total Requests** | 4,123 | Total redirects successfully processed |
+| **Throughput** | ~67 req/s | Equivalent to ~5.8 Million requests/day |
+| **Error Rate** | 0.00% | Zero dropped connections under heavy concurrency |
+| **p95 Latency** | 563.81 ms | Tight variance (~120ms delta from median) proves Redis cache successfully prevented DB bottlenecking *(base latency bound by physical geography)* |
+
+---
+
+## 🔌 API Documentation
+
+Every response includes an `X-Request-ID` header for distributed tracing. Errors follow a consistent `{ "error": string, "code": string }` format.
+
+### 1. Create Short URL
+
+- **Endpoint:** `POST /api/shorten`
+- **Auth Required:** Yes
+- **Rate Limit:** 100 requests / hour
+
+**Request Body:**
+```json
+{
+  "originalUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+  "customAlias": "rickroll",
+  "maxClicks": 100,
+  "expiresAt": "2026-12-31T23:59:00Z"
+}
+```
+
+**Success Response `201 Created`:**
+```json
+{
+  "message": "URL shortened successfully",
+  "shortCode": "rickroll",
+  "shortUrl": "https://url-shortener-dmyt.onrender.com/rickroll"
+}
+```
+
+---
+
+### 2. Generate QR Code
+
+- **Endpoint:** `GET /api/qr/:shortCode`
+- **Auth Required:** No
+
+**Success Response `200 OK`:**
+```json
+{
+  "qrCode": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAYAAAB5..."
+}
+```
+
+---
+
+### 3. Redirect to Original URL
+
+- **Endpoint:** `GET /:shortCode`
+- **Auth Required:** No
+- **Success Response:** `302 Found` — Redirects to `originalUrl`
+- **Error Response:** `410 Gone` — Serves an HTML page if the link is expired or click limit is reached
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Frontend:** React, Vite, Axios  
-- **Backend:** Node.js, Express.js  
-- **Database:** PostgreSQL (Persistent Storage)  
-- **Cache:** Redis (In-memory fast reads)  
-- **Infrastructure:** Docker & Docker Compose  
-- **Logging & Monitoring:** Winston & Morgan  
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | React, Vite, Axios, React Router |
+| **Backend** | Node.js, Express.js, `qrcode`, `node-cron` |
+| **Database** | PostgreSQL (Neon) |
+| **Cache** | Redis (Upstash) |
+| **Security** | Helmet, CORS, JWT |
+| **Testing** | k6 (Load Testing) |
+| **Logging** | Winston, Morgan |
 
 ---
 
-### Architecture Overview
+## 🚀 Quick Start (Docker Setup)
 
-The system follows a **4-Tier Architecture**:
+**1. Clone the Repository**
+```bash
+git clone https://github.com/YOUR_USERNAME/url-shortener.git
+cd url-shortener
+```
 
-1. **Client Layer (Frontend - React)**
-2. **Application Layer (Node.js + Express)**
-3. **Cache Layer (Redis)**
-4. **Database Layer (PostgreSQL)**
+**2. Configure Environment Variables**
 
-It implements the **Cache-Aside Pattern** to ensure ultra-fast read performance while protecting the primary database from traffic spikes.
-
----
-
-## 🔐 Environment Variables
-
-Create a `.env` file inside the `backend/` directory:
-
+Create a file at `backend/.env`:
 ```env
 PORT=3000
 DB_USER=postgres
@@ -57,138 +146,10 @@ JWT_SECRET=super_secret_jwt_key_123
 REDIS_URL=redis://redis:6379
 ```
 
-> ⚠ If running without Docker, replace `DB_HOST` and `REDIS_URL` with `localhost`.
-
----
-
-## 🚀 Quick Start (Docker Setup)
-
-### 1️⃣ Prerequisites
-- Install Docker Desktop
-- Ensure Docker is running
-
-### 2️⃣ Clone the Repository
-
-```bash
-git clone https://github.com/YOUR_USERNAME/url-shortener.git
-cd url-shortener
-```
-
-### 3️⃣ Start the Entire System
-
+**3. Start the System**
 ```bash
 docker-compose up --build
 ```
 
-### 4️⃣ Access the Application
-
-- 🌐 Frontend: http://localhost:5173  
-- 🔌 Backend API: http://localhost:3000  
-
----
-
-## 🔌 Core API Endpoints
-
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|------------|--------------|
-| POST | `/api/auth/register` | Register a new user | ❌ No |
-| POST | `/api/auth/login` | Login & receive JWT | ❌ No |
-| POST | `/shorten` | Generate short URL | ✅ Yes |
-| GET | `/myurls` | Get user URLs | ✅ Yes |
-| GET | `/:shortCode` | Redirect to original URL | ❌ No |
-
----
-
-## 📈 System Design & Scalability
-
-### 🧠 The "1 Million Users" Problem
-
-URL shorteners are **read-heavy systems** (≈ 100:1 read-to-write ratio).
-
-If every redirect hits PostgreSQL directly:
-- ❌ High DB load
-- ❌ Increased latency
-- ❌ Poor scalability
-
----
-
-### ✅ Solution: Redis (Cache-Aside Pattern)
-
-**Flow:**
-
-1. User clicks short link  
-2. Server checks Redis  
-3. If cache hit → Immediate redirect  
-4. If cache miss → Query PostgreSQL → Store in Redis (24h TTL) → Redirect  
-
-**Benefits:**
-
-- ⚡ Sub-millisecond response time  
-- 📉 Reduced database load  
-- 🚀 Horizontal scalability  
-
----
-
-## ⚖ Trade-offs & Analytics
-
-To maintain instant redirects:
-
-- The server sends **302 Redirect immediately**
-- Click analytics update runs **asynchronously**
-- If DB fails, a click may be lost
-
-**Trade-off:**
-Performance > Absolute consistency
-
-User experience is prioritized.
-
----
-
-## 📝 Logging & Monitoring
-
-Integrated production-level logging:
-
-- **Morgan** → HTTP request logging  
-- **Winston** → Application & error logging  
-
-### Log Files
-
-```
-logs/combined.log  → All traffic and routine events
-logs/error.log     → Critical errors & exceptions
-```
-
----
-
-## 🔮 Future Improvements
-
-- 🛡 Rate Limiting (Prevent abuse & DDoS)
-- 🆔 Distributed ID Generation (Snowflake-style)
-- ✏ Custom Short Aliases
-- 📊 Advanced Analytics Dashboard
-- ☁ Load Balancer + Horizontal Scaling
-- 🔁 Message Queue (Kafka/RabbitMQ) for reliable analytics
-
----
-
-## 🧪 How to Run Without Docker
-
-1. Install PostgreSQL & Redis locally  
-2. Create `.env` file  
-3. Install backend dependencies:
-
-```bash
-cd backend
-npm install
-npm run dev
-```
-
-4. Install frontend dependencies:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
----
+- Frontend: http://localhost:5173
+- Backend: http://localhost:3000
