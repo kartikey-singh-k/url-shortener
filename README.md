@@ -18,7 +18,6 @@ A full-stack, production-ready URL shortener engineered to handle high-volume re
 - [x] **Sliding-Window Rate Limiting** — Redis-backed rate limiter protecting endpoints from abuse (100 req/hr for Auth, 10 req/hr for Anonymous)
 - [x] **Enterprise Observability** — Global error handling and `X-Request-ID` tracing injected into Morgan/Winston logs
 - [x] **Automated Maintenance** — `node-cron` background jobs to sweep and permanently delete expired links
-- [ ] *Future: Distributed ID Generation (Snowflake-style) & Message Queues (Kafka) for async analytics*
 
 ---
 
