@@ -1,4 +1,4 @@
-# 🚀 Scalable URL Shortener
+# URL Shortener
 
 **Live Demo:** [View Application](https://url-shortener-phi-vert.vercel.app/login) | **Backend API:** [Deployed on Render](https://url-shortener-dmyt.onrender.com)
 
