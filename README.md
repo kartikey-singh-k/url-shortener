@@ -146,11 +146,11 @@ Create a file at `backend/.env`:
 ```env
 PORT=3000
 DB_USER=postgres
-DB_PASSWORD=mysecretpassword
+DB_PASSWORD=your_db_password_here
 DB_HOST=postgres
 DB_PORT=5432
 DB_NAME=url_shortener
-JWT_SECRET=super_secret_jwt_key_123
+JWT_SECRET=your_jwt_secret_here
 REDIS_URL=redis://redis:6379
 ```
 
