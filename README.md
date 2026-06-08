@@ -25,11 +25,11 @@ A full-stack, production-ready URL shortener engineered to handle high-volume re
 
 ```mermaid
 flowchart LR
-    User([👤 User]) -->|Clicks Link| Frontend[⚛️ React Frontend <br/> (Vercel)]
-    Frontend -->|API Request| Backend[🟢 Node.js Backend <br/> (Render)]
+    User(["👤 User"]) -->|Clicks Link| Frontend["⚛️ React Frontend <br/> (Vercel)"]
+    Frontend -->|API Request| Backend["🟢 Node.js Backend <br/> (Render)"]
     
-    Backend -->|⚡ Cache Read/Write| Redis[(🔴 Upstash Redis)]
-    Backend -->|💾 Database Query| Postgres[(🐘 Neon PostgreSQL)]
+    Backend -->|⚡ Cache Read/Write| Redis[("🔴 Upstash Redis")]
+    Backend -->|💾 Database Query| Postgres[("🐘 Neon PostgreSQL")]
 ```
 
 The system follows a highly scalable **4-Tier Architecture**:
